@@ -1,6 +1,6 @@
 package com.identity.users.aplication.services;
 
-import com.identity.users.aplication.AppUsersDto;
+import com.identity.users.aplication.AppUserDto;
 import com.identity.users.infrastructure.JpaUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class GetByUser {
         this.repository = repository;
     }
 
-    public AppUsersDto get(String user){
-        return new AppUsersDto(repository.getByUser(user));
+    public AppUserDto get(String user){
+        return new AppUserDto(repository.getByUser(user));
     }
 }

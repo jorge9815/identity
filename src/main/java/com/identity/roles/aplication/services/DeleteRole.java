@@ -13,7 +13,7 @@ public class DeleteRole {
         this.repository = repository;
     }
 
-    public void delete(RoleDto dto){
-        repository.deleteRoles(new RoleID(dto.getId()));
+    public void delete(String roleId){
+        repository.deleteRoles(new RoleID(roleId));
     }
 }

@@ -1,5 +1,6 @@
 package com.identity.users.domain.repository;
 
+import com.identity.roles.domain.value_objects.RoleID;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
 
@@ -10,4 +11,5 @@ public interface AppUserRepository {
     AppUser getById(AppUserID userID);
     AppUser getByUser(String user);
     AppUser getByUserAndPassword(String user, String password);
+    void addRoleToUser(AppUserID userID, RoleID roleID);
 }

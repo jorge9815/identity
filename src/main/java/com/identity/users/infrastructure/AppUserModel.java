@@ -4,10 +4,7 @@ import com.identity.roles.infrastructure.RoleModel;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +17,7 @@ public class AppUserModel {
     private String user;
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleModel> rolesList;
 
     public AppUserModel(String id, String name, String user, String password, List<RoleModel> rolesList) {
@@ -63,6 +60,10 @@ public class AppUserModel {
         this.rolesList = user.getRolesList()
                 .stream().map(RoleModel::new)
                 .collect(Collectors.toList());
+    }
+
+    public void addRole(RoleModel roleModel){
+        this.rolesList.add(roleModel);
     }
 
     public String getId() {

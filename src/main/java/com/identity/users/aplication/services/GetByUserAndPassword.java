@@ -1,6 +1,6 @@
 package com.identity.users.aplication.services;
 
-import com.identity.users.aplication.AppUsersDto;
+import com.identity.users.aplication.AppUserDto;
 import com.identity.users.infrastructure.JpaUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class GetByUserAndPassword {
         this.repository = repository;
     }
 
-    public AppUsersDto get(String user, String password){
-        return new AppUsersDto(repository.getByUserAndPassword(user, password));
+    public AppUserDto get(String user, String password){
+        return new AppUserDto(repository.getByUserAndPassword(user, password));
     }
 }

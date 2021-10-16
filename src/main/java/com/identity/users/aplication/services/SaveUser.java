@@ -1,6 +1,6 @@
 package com.identity.users.aplication.services;
 
-import com.identity.users.aplication.AppUsersDto;
+import com.identity.users.aplication.AppUserDto;
 import com.identity.users.infrastructure.JpaUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class SaveUser {
         this.repository = repository;
     }
 
-    public void save(AppUsersDto dto){
+    public void save(AppUserDto dto){
         repository.saveUser(dto.toAppUser());
     }
 }

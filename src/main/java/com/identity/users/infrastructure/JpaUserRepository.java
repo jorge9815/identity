@@ -1,5 +1,7 @@
 package com.identity.users.infrastructure;
 
+import com.identity.roles.domain.value_objects.RoleID;
+import com.identity.roles.infrastructure.RoleModel;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.repository.AppUserRepository;
 import com.identity.users.domain.value_objects.AppUserID;
@@ -55,6 +57,16 @@ public class JpaUserRepository implements AppUserRepository {
                 .setParameter("password",password)
                 .getSingleResult()
                 .toAppUser();
+    }
+
+    @Override
+    public void addRoleToUser(AppUserID userID, RoleID roleID) {
+        var role = em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
+                .setParameter("id", roleID.getValue())
+                .getSingleResult();
+
+        var user = getModelById(userID.getValue());
+        user.addRole(role);//todo chek for transactional
     }
 
     private AppUserModel getModelById(String id) {

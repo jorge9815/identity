@@ -7,14 +7,14 @@ import com.identity.users.domain.value_objects.AppUserID;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AppUsersDto {
+public class AppUserDto {
     private String id;
     private String name;
     private String user;
     private String password;
     private List<RoleDto> rolesList;
 
-    public AppUsersDto(String id, String name, String user, String password, List<RoleDto> rolesList) {
+    public AppUserDto(String id, String name, String user, String password, List<RoleDto> rolesList) {
         this.id = id;
         this.name = name;
         this.user = user;
@@ -22,7 +22,7 @@ public class AppUsersDto {
         this.rolesList = rolesList;
     }
 
-    public AppUsersDto(AppUser user) {
+    public AppUserDto(AppUser user) {
         this.id = user.getId().getValue();
         this.name = user.getName();
         this.user = user.getUser();
@@ -32,7 +32,7 @@ public class AppUsersDto {
                 .collect(Collectors.toList());
     }
 
-    public AppUsersDto() {
+    public AppUserDto() {
     }
 
     public AppUser toAppUser() {
