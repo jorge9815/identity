@@ -1,6 +1,7 @@
 package com.identity.users.aplication;
 
 import com.identity.roles.aplication.RoleDto;
+import com.identity.roles.domain.entity.Role;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
 
@@ -41,19 +42,18 @@ public class AppUserDto {
                 this.name,
                 this.user,
                 this.password,
-                this.rolesList
-                        .stream().map(RoleDto::toRole)
-                        .collect(Collectors.toList())
+                this.getRoleList()
         );
     }
 
-    public AppUser toAppUserWithoutRoles() {
-        return new AppUser(
-                new AppUserID(this.id),
-                this.name,
-                this.user,
-                this.password
-                );
+    private List<Role> getRoleList() {
+        if(this.rolesList != null) {
+            return this.rolesList
+                    .stream().map(RoleDto::toRole)
+                    .collect(Collectors.toList());
+        }
+
+        return null;
     }
 
     public String getId() {

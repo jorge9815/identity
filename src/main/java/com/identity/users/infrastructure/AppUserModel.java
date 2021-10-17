@@ -33,14 +33,12 @@ public class AppUserModel {
         this.name = user.getName();
         this.user = user.getUser();
         this.password = user.getPassword();
+
         if (!(user.getRolesList() == null)) {
             this.rolesList = user.getRolesList()
                     .stream().map(RoleModel::new)
                     .collect(Collectors.toList());
-        } else {
-            this.rolesList = null;
         }
-
     }
 
     public AppUserModel() {

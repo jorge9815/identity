@@ -21,6 +21,6 @@ public class SaveUser {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         log.info("Processing user information");
-        repository.saveUser(dto.toAppUserWithoutRoles());
+        repository.saveUser(dto.toAppUser());
     }
 }
