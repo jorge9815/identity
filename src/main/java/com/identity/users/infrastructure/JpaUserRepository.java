@@ -5,13 +5,16 @@ import com.identity.roles.infrastructure.RoleModel;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.repository.AppUserRepository;
 import com.identity.users.domain.value_objects.AppUserID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import java.util.Optional;
 
 @Repository
-@Transactional
+@Transactional @Slf4j
 public class JpaUserRepository implements AppUserRepository {
     private EntityManager em;
 
@@ -22,6 +25,7 @@ public class JpaUserRepository implements AppUserRepository {
 
     @Override
     public void saveUser(AppUser user) {
+        log.info("Saving user information in the database");
         em.persist(new AppUserModel(user));
     }
 
@@ -42,11 +46,10 @@ public class JpaUserRepository implements AppUserRepository {
     }
 
     @Override
-    public AppUser getByUser(String user) {
-        return em.createQuery("FROM AppUserModel u WHERE u.user =: user", AppUserModel.class)
-                .setParameter("user", user)
-                .getSingleResult()
-                .toAppUser();
+    public Optional<AppUser> getByUser(String user) {
+        Optional<AppUser> returned = Optional.of(getModelByUser(user).toAppUser());
+        return returned;
+
     }
 
     @Override
@@ -74,4 +77,16 @@ public class JpaUserRepository implements AppUserRepository {
                 .setParameter("id", id)
                 .getSingleResult();
     }
+
+    private AppUserModel getModelByUser(String user){
+        try {
+            return em.createQuery("FROM AppUserModel u WHERE u.user =: user", AppUserModel.class)
+                    .setParameter("user", user)
+                    .getSingleResult();
+        }catch (NoResultException noResultException){
+            log.error("Username: {} does not exist", user);
+            return null;
+        }
+    }
+
 }

@@ -34,6 +34,18 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>1.5.7</version>
 		</dependency>
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.18.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.22</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.h2database</groupId>

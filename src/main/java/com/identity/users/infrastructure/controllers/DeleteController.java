@@ -4,7 +4,7 @@ import com.identity.users.aplication.services.DeleteUser;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 public class DeleteController {
     private DeleteUser deleteUser;
 

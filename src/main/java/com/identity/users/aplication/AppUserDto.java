@@ -47,6 +47,19 @@ public class AppUserDto {
         );
     }
 
+    public AppUser toAppUserWithoutRoles() {
+        return new AppUser(
+                new AppUserID(this.id),
+                this.name,
+                this.user,
+                this.password
+                );
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public void addRoles(RoleDto roleDto) {
         rolesList.add(roleDto);
     }

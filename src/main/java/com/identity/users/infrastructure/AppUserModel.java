@@ -33,15 +33,20 @@ public class AppUserModel {
         this.name = user.getName();
         this.user = user.getUser();
         this.password = user.getPassword();
-        this.rolesList = user.getRolesList()
-                .stream().map(RoleModel::new)
-                .collect(Collectors.toList());
+        if (!(user.getRolesList() == null)) {
+            this.rolesList = user.getRolesList()
+                    .stream().map(RoleModel::new)
+                    .collect(Collectors.toList());
+        } else {
+            this.rolesList = null;
+        }
+
     }
 
     public AppUserModel() {
     }
 
-    public AppUser toAppUser(){
+    public AppUser toAppUser() {
         return new AppUser(
                 new AppUserID(this.id),
                 this.name,
@@ -53,7 +58,7 @@ public class AppUserModel {
         );
     }
 
-    public void update(AppUser user){
+    public void update(AppUser user) {
         this.name = user.getName();
         this.user = user.getUser();
         this.password = user.getPassword();
@@ -62,7 +67,7 @@ public class AppUserModel {
                 .collect(Collectors.toList());
     }
 
-    public void addRole(RoleModel roleModel){
+    public void addRole(RoleModel roleModel) {
         this.rolesList.add(roleModel);
     }
 
