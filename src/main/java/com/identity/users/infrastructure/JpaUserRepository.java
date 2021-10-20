@@ -14,7 +14,8 @@ import javax.persistence.NoResultException;
 import java.util.Optional;
 
 @Repository
-@Transactional @Slf4j
+@Transactional
+@Slf4j
 public class JpaUserRepository implements AppUserRepository {
     private EntityManager em;
 
@@ -32,7 +33,7 @@ public class JpaUserRepository implements AppUserRepository {
     @Override
     public void updateUser(AppUser user) {
         var model = getModelById(user.getId().getValue());
-        model.update(user);//todo comprobar q update por transactional
+        model.update(user);
     }
 
     @Override
@@ -47,9 +48,12 @@ public class JpaUserRepository implements AppUserRepository {
 
     @Override
     public Optional<AppUser> getByUser(String user) {
-        Optional<AppUser> returned = Optional.of(getModelByUser(user).toAppUser());
-        return returned;
-
+        try {
+            Optional<AppUser> returned = Optional.of(getModelByUser(user).toAppUser());
+            return returned;
+        } catch (NullPointerException nullP) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -57,19 +61,15 @@ public class JpaUserRepository implements AppUserRepository {
         return em
                 .createQuery("FROM AppUserModel u WHERE u.user =: user AND u.password =: password", AppUserModel.class)
                 .setParameter("user", user)
-                .setParameter("password",password)
+                .setParameter("password", password)
                 .getSingleResult()
                 .toAppUser();
     }
 
     @Override
     public void addRoleToUser(AppUserID userID, RoleID roleID) {
-        var role = em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
-                .setParameter("id", roleID.getValue())
-                .getSingleResult();
-
         var user = getModelById(userID.getValue());
-        user.addRole(role);//todo chek for transactional
+        user.addRole(getRoleModel(roleID.getValue()));
     }
 
     private AppUserModel getModelById(String id) {
@@ -78,15 +78,21 @@ public class JpaUserRepository implements AppUserRepository {
                 .getSingleResult();
     }
 
-    private AppUserModel getModelByUser(String user){
+    private AppUserModel getModelByUser(String user) {
         try {
             return em.createQuery("FROM AppUserModel u WHERE u.user =: user", AppUserModel.class)
                     .setParameter("user", user)
                     .getSingleResult();
-        }catch (NoResultException noResultException){
+        } catch (NoResultException noResultException) {
             log.error("Username: {} does not exist", user);
             return null;
         }
+    }
+
+    private RoleModel getRoleModel(String roleID){
+        return em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
+                .setParameter("id", roleID)
+                .getSingleResult();
     }
 
 }
