@@ -2,6 +2,7 @@ package com.identity.utils;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -16,11 +17,16 @@ public class PassBasedEnc {
     private static final int keyLength = 256;
 
     public static String getSaltValue(int length) {
-        StringBuilder finalVal = new StringBuilder(length);
-        for (int i = 0; i < length; i++) {
-            finalVal.append(characters.charAt(random.nextInt(characters.length())));
-        }
-        return new String(finalVal);
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[length];
+        random.nextBytes(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
+
+//        StringBuilder finalVal = new StringBuilder(length);
+//        for (int i = 0; i < length; i++) {
+//            finalVal.append(characters.charAt(random.nextInt(characters.length())));
+//        }
+//        return new String(finalVal);
     }
 
     public static byte[] hash(char[] password, byte[] salt) {
@@ -37,17 +43,13 @@ public class PassBasedEnc {
     }
 
     public static String generateSecurePassword(String password, String salt) {
-        String finalVal = null;
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
-        finalVal = Base64.getEncoder().encodeToString(securePassword);
-        return finalVal;
+        return Base64.getEncoder().encodeToString(securePassword);
     }
 
     public static boolean verifyUserPassword(String providedPassword, String securedPassword, String salt) {
-        boolean finalVal = false;
-        String newSecurePassword = generateSecurePassword(providedPassword, salt);
-        finalVal = newSecurePassword.equalsIgnoreCase(securedPassword);
-        return finalVal;
+        return generateSecurePassword(providedPassword, salt)
+                .equalsIgnoreCase(securedPassword);
     }
 }
 
