@@ -7,10 +7,10 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 
 public class PrivateKeyReader {
-    public static PrivateKey get(String filename)
+    public static PrivateKey get(String filepath)
             throws Exception {
 
-        byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(filepath));
 
         PKCS8EncodedKeySpec spec =
                 new PKCS8EncodedKeySpec(keyBytes);

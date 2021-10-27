@@ -24,7 +24,6 @@ public class JpaUserRepository implements AppUserRepository {
         this.em = em;
     }
 
-
     @Override
     public void saveUser(AppUser user) {
         log.info("Saving user information in the database");
@@ -48,23 +47,9 @@ public class JpaUserRepository implements AppUserRepository {
     }
 
     @Override
-    public AppUser getByUser(String user)  throws UserNotFound{
-        try {
-            return getModelByUser(user).toAppUser();
-        } catch (NullPointerException nullP) {
-            throw new UserNotFound();
-        }
+    public AppUser getByUser(String user) throws UserNotFound {
+        return getModelByUser(user).toAppUser();
     }
-
-//    @Override
-//    public AppUser getByUserAndPassword(String user, String password) {
-//        return em
-//                .createQuery("FROM AppUserModel u WHERE u.user =: user AND u.password =: password", AppUserModel.class)
-//                .setParameter("user", user)
-//                .setParameter("password", password)
-//                .getSingleResult()
-//                .toAppUser();
-//    }
 
     @Override
     public void addRoleToUser(AppUserID userID, RoleID roleID) {
@@ -85,11 +70,11 @@ public class JpaUserRepository implements AppUserRepository {
                     .getSingleResult();
         } catch (NoResultException noResultException) {
             log.error("Username: {} does not exist", user);
-            return null;
+            throw new UserNotFound();
         }
     }
 
-    private RoleModel getRoleModel(String roleID){
+    private RoleModel getRoleModel(String roleID) {
         return em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
                 .setParameter("id", roleID)
                 .getSingleResult();

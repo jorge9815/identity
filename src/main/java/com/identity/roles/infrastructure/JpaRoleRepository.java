@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,9 +70,13 @@ public class JpaRoleRepository implements RoleRepository {
     }
 
     private RoleModel getRoleModel(String name){
-        return em.createQuery("FROM RoleModel r WHERE r.name =:name", RoleModel.class)
-                .setParameter("name", name)
-                .getSingleResult();
+        try {
+            return em.createQuery("FROM RoleModel r WHERE r.name =:name", RoleModel.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        }catch (NoResultException no){
+            return null;
+        }
     }
 
     private RoleModel getRoleModelByID(String id){

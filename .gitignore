@@ -33,4 +33,10 @@ build/
 .vscode/
 
 # ignore aplication.properties
-*.properties
+src/main/resources/application.properties
+private.pem
+public.pem
+
+
+
+

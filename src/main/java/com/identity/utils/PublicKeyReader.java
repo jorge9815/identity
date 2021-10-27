@@ -8,10 +8,10 @@ import java.security.spec.X509EncodedKeySpec;
 
 public class PublicKeyReader {
 
-    public static PublicKey get(String filename)
+    public static PublicKey get(String filepath)
             throws Exception {
 
-        byte[] keyBytes = Files.readAllBytes(Paths.get(filename));
+        byte[] keyBytes = Files.readAllBytes(Paths.get(filepath));
 
         X509EncodedKeySpec spec =
                 new X509EncodedKeySpec(keyBytes);
