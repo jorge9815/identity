@@ -1,7 +1,7 @@
 package com.identity.users.domain.entity;
 
-import com.identity.roles.aplication.RoleDto;
 import com.identity.roles.domain.entity.Role;
+import com.identity.shared.Password;
 import com.identity.users.domain.value_objects.AppUserID;
 
 import java.util.List;
@@ -10,14 +10,14 @@ public class AppUser {
     private AppUserID id;
     private String name;
     private String user;
-    private String password;
+    private Password password;
     private List<Role> rolesList;
 
-    public AppUser(AppUserID id,String name, String user, String password, List<Role> rolesList) {
+    public AppUser(AppUserID id, String name, String user, String password, String salt, List<Role> rolesList) {
         this.id = id;
         this.name = name;
         this.user = user;
-        this.password = password;
+        this.password = new Password(salt, password);
         this.rolesList = rolesList;
     }
 
@@ -25,10 +25,11 @@ public class AppUser {
         this.id = id;
         this.name = name;
         this.user = user;
-        this.password = password;
+        this.password = new Password(password);
     }
 
-    public AppUser() {}
+    public AppUser() {
+    }
 
     public AppUserID getId() {
         return id;
@@ -54,11 +55,11 @@ public class AppUser {
         this.user = user;
     }
 
-    public String getPassword() {
+    public Password getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(Password password) {
         this.password = password;
     }
 

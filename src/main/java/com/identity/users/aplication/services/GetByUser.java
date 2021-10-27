@@ -13,11 +13,6 @@ public class GetByUser {
     }
 
     public AppUserDto get(String user){
-        var returned = repository.getByUser(user);
-        if (!returned.isEmpty()) {
-            return new AppUserDto(returned.get());
-        }else{
-            return null;
-        }
+        return new AppUserDto(repository.getByUser(user));
     }
 }

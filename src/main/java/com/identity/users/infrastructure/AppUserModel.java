@@ -16,6 +16,7 @@ public class AppUserModel {
     private String name;
     private String user;
     private String password;
+    private String salt;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleModel> rolesList;
@@ -32,8 +33,8 @@ public class AppUserModel {
         this.id = user.getId().getValue();
         this.name = user.getName();
         this.user = user.getUser();
-        this.password = user.getPassword();
-
+        this.password = user.getPassword().getEncryptedPassword();
+        this.salt = user.getPassword().getSalt();
         if (!(user.getRolesList() == null)) {
             this.rolesList = user.getRolesList()
                     .stream().map(RoleModel::new)
@@ -50,6 +51,7 @@ public class AppUserModel {
                 this.name,
                 this.user,
                 this.password,
+                this.salt,
                 this.rolesList
                         .stream().map(RoleModel::toRole)
                         .collect(Collectors.toList())
@@ -59,7 +61,8 @@ public class AppUserModel {
     public void update(AppUser user) {
         this.name = user.getName();
         this.user = user.getUser();
-        this.password = user.getPassword();
+        this.password = user.getPassword().getEncryptedPassword();
+        this.salt = user.getPassword().getSalt();
         this.rolesList = user.getRolesList()
                 .stream().map(RoleModel::new)
                 .collect(Collectors.toList());

@@ -11,7 +11,7 @@ public interface AppUserRepository {
     void updateUser(AppUser user);
     void deleteUser(AppUserID userID);
     AppUser getById(AppUserID userID);
-    Optional<AppUser> getByUser(String user);
-    AppUser getByUserAndPassword(String user, String password);
+    AppUser getByUser(String user);
+    //AppUser getByUserAndPassword(String user, String password);
     void addRoleToUser(AppUserID userID, RoleID roleID);
 }

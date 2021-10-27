@@ -14,6 +14,7 @@ public class AppUserDto {
     private String user;
     private String password;
     private List<RoleDto> rolesList;
+    private String salt;
 
     public AppUserDto(String id, String name, String user, String password, List<RoleDto> rolesList) {
         this.id = id;
@@ -27,10 +28,11 @@ public class AppUserDto {
         this.id = user.getId().getValue();
         this.name = user.getName();
         this.user = user.getUser();
-        this.password = user.getPassword();
+        this.password = user.getPassword().getEncryptedPassword();
         this.rolesList = user.getRolesList()
                 .stream().map(RoleDto::new)
                 .collect(Collectors.toList());
+        this.salt = user.getPassword().getSalt();
     }
 
     public AppUserDto() {
@@ -41,8 +43,7 @@ public class AppUserDto {
                 new AppUserID(this.id),
                 this.name,
                 this.user,
-                this.password,
-                this.getRoleList()
+                this.password
         );
     }
 

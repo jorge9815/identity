@@ -1,5 +1,6 @@
 package com.identity.users.infrastructure;
 
+import com.identity.exeptions.exceptions.UserNotFound;
 import com.identity.roles.domain.value_objects.RoleID;
 import com.identity.roles.infrastructure.RoleModel;
 import com.identity.users.domain.entity.AppUser;
@@ -47,24 +48,23 @@ public class JpaUserRepository implements AppUserRepository {
     }
 
     @Override
-    public Optional<AppUser> getByUser(String user) {
+    public AppUser getByUser(String user)  throws UserNotFound{
         try {
-            Optional<AppUser> returned = Optional.of(getModelByUser(user).toAppUser());
-            return returned;
+            return getModelByUser(user).toAppUser();
         } catch (NullPointerException nullP) {
-            return Optional.empty();
+            throw new UserNotFound();
         }
     }
 
-    @Override
-    public AppUser getByUserAndPassword(String user, String password) {
-        return em
-                .createQuery("FROM AppUserModel u WHERE u.user =: user AND u.password =: password", AppUserModel.class)
-                .setParameter("user", user)
-                .setParameter("password", password)
-                .getSingleResult()
-                .toAppUser();
-    }
+//    @Override
+//    public AppUser getByUserAndPassword(String user, String password) {
+//        return em
+//                .createQuery("FROM AppUserModel u WHERE u.user =: user AND u.password =: password", AppUserModel.class)
+//                .setParameter("user", user)
+//                .setParameter("password", password)
+//                .getSingleResult()
+//                .toAppUser();
+//    }
 
     @Override
     public void addRoleToUser(AppUserID userID, RoleID roleID) {
