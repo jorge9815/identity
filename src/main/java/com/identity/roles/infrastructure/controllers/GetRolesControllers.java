@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("roles")
 public class GetRolesControllers {
-    private GetRoles service;
+    private final GetRoles service;
 
     public GetRolesControllers(GetRoles service) {
         this.service = service;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteUser {
-    private JpaUserRepository repository;
+    private final JpaUserRepository repository;
 
     public DeleteUser(JpaUserRepository repository) {
         this.repository = repository;

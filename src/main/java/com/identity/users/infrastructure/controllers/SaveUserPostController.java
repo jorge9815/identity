@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("user")
 @Slf4j
 public class SaveUserPostController {
-    private SaveUser saveUser;
+    private final SaveUser saveUser;
 
     public SaveUserPostController(SaveUser saveUser) {
         this.saveUser = saveUser;

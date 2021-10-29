@@ -96,4 +96,8 @@ public class AppUserDto {
     public void setRolesList(List<RoleDto> rolesList) {
         this.rolesList = rolesList;
     }
+
+    public String getSalt() {
+        return salt;
+    }
 }

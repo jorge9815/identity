@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("user")
 public class DeleteController {
-    private DeleteUser deleteUser;
+    private final DeleteUser deleteUser;
 
     public DeleteController(DeleteUser deleteUser) {
         this.deleteUser = deleteUser;

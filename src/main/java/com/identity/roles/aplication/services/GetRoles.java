@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class GetRoles {
-    private JpaRoleRepository repository;
+    private final JpaRoleRepository repository;
 
     public GetRoles(JpaRoleRepository repository) {
         this.repository = repository;

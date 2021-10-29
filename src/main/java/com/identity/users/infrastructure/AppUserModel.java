@@ -35,11 +35,11 @@ public class AppUserModel {
         this.user = user.getUser();
         this.password = user.getPassword().getEncryptedPassword();
         this.salt = user.getPassword().getSalt();
-        if (!(user.getRolesList() == null)) {
+        if (hasRolesTheUser(user))
             this.rolesList = user.getRolesList()
                     .stream().map(RoleModel::new)
                     .collect(Collectors.toList());
-        }
+
     }
 
     public AppUserModel() {
@@ -63,9 +63,10 @@ public class AppUserModel {
         this.user = user.getUser();
         this.password = user.getPassword().getEncryptedPassword();
         this.salt = user.getPassword().getSalt();
-        this.rolesList = user.getRolesList()
-                .stream().map(RoleModel::new)
-                .collect(Collectors.toList());
+      if (hasRolesTheUser(user))
+            this.rolesList = user.getRolesList()
+                    .stream().map(RoleModel::new)
+                    .collect(Collectors.toList());
     }
 
     public void addRole(RoleModel roleModel) {
@@ -110,5 +111,9 @@ public class AppUserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private boolean hasRolesTheUser(AppUser user){
+        return !(user.getRolesList() == null);
     }
 }

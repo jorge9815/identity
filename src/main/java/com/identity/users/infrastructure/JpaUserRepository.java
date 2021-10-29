@@ -18,7 +18,7 @@ import java.util.Optional;
 @Transactional
 @Slf4j
 public class JpaUserRepository implements AppUserRepository {
-    private EntityManager em;
+    private final EntityManager em;
 
     public JpaUserRepository(EntityManager em) {
         this.em = em;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UpdateUser {
-    private JpaUserRepository repository;
+    private final JpaUserRepository repository;
 
     public UpdateUser(JpaUserRepository repository) {
         this.repository = repository;

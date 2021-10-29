@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetByName {
-    private JpaRoleRepository repository;
+    private final JpaRoleRepository repository;
 
     public GetByName(JpaRoleRepository repository) {
         this.repository = repository;

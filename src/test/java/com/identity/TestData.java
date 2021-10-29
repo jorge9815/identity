@@ -2,6 +2,9 @@ package com.identity;
 
 import com.identity.roles.domain.entity.Role;
 import com.identity.roles.domain.value_objects.RoleID;
+import com.identity.shared.PaginatedList;
+import com.identity.shared.Password;
+import com.identity.users.aplication.AppUserDto;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
 
@@ -26,5 +29,34 @@ public class TestData {
                 "NWSqVMuhjvQcPO7brI0KIeAhI2Qt8f",
                 getRoles()
         );
+    }
+
+    public static AppUserDto getNewUserDto(){
+        return new AppUserDto(
+                "41d33e0c-0803-40bc-ab47-f26fa89796e5",
+                "Ricardo Acosta LOLO",
+                "ricardo",
+                "Geeks@portal20",
+                new ArrayList<>());
+    }
+
+    public static PaginatedList<Role> getPaginatedListOfRoles(){
+        return new PaginatedList<>(2L, 1, 2, getRoles());
+    }
+
+    public static Role getNewRole(){
+        return new Role(new RoleID("472c02d6-1c61-47f0-a44f-ae50a15b1fce"), "D_ADMIN");
+    }
+
+    public static RoleID getRoleId(){
+        return getNewRole().getId();
+    }
+
+    public static AppUserID getUserID(){
+        return getUser().getId();
+    }
+
+    public static Password getPassword(){
+        return getUser().getPassword();
     }
 }

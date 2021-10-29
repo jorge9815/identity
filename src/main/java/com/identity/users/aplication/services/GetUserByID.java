@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GetUserByID {
-    private JpaUserRepository repository;
+    private final JpaUserRepository repository;
 
     public GetUserByID(JpaUserRepository repository) {
         this.repository = repository;

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("user")
 public class AddRoleToUserPostController {
-    private AddRoleToUser service;
+    private final AddRoleToUser service;
 
     public AddRoleToUserPostController(AddRoleToUser service) {
         this.service = service;

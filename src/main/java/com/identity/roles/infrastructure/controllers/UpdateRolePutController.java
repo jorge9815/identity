@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("roles")
 public class UpdateRolePutController {
-    private UpdateRole service;
+    private final UpdateRole service;
 
     public UpdateRolePutController(UpdateRole service) {
         this.service = service;

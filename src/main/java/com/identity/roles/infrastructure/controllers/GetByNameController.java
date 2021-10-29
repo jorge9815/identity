@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("role")
 public class GetByNameController {
-    private GetByName service;
+    private final GetByName service;
 
     public GetByNameController(GetByName service) {
         this.service = service;

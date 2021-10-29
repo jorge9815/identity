@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DeleteRole {
-    private JpaRoleRepository repository;
+    private final JpaRoleRepository repository;
 
     public DeleteRole(JpaRoleRepository repository) {
         this.repository = repository;

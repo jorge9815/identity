@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.persistence.EntityManager;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.identity.TestData.getNewRole;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class JpaUserRepositoryTest {
@@ -82,13 +82,14 @@ class JpaUserRepositoryTest {
 
     @Test
     void addRoleToUser() {
-        Role newRole = new Role(new RoleID("472c02d6-1c61-47f0-a44f-ae50a15b1fce"), "D_ADMIN");
+        Role newRole = getNewRole();
         underTest.saveUser(user);
         roleRepository.saveRole(newRole);
 
         underTest.addRoleToUser(user.getId(), newRole.getId());
 
-        List<Role> rolesList = user.getRolesList();
+        List<Role> rolesList = new ArrayList<>();
+        rolesList.addAll(user.getRolesList());
         rolesList.add(newRole);
         user.setRolesList(rolesList);
 

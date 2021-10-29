@@ -1,5 +1,6 @@
 package com.identity.roles.infrastructure;
 
+import com.identity.exeptions.exceptions.RoleNotFound;
 import com.identity.roles.domain.entity.Role;
 import com.identity.roles.domain.repository.RoleRepository;
 import com.identity.roles.domain.value_objects.RoleID;
@@ -19,7 +20,7 @@ import static com.identity.shared.Pagination.makeOffset;
 @Repository
 @Transactional @Slf4j
 public class JpaRoleRepository implements RoleRepository {
-    private EntityManager em;
+    private final EntityManager em;
 
     public JpaRoleRepository(EntityManager entityManager) {
         this.em = entityManager;
@@ -79,17 +80,18 @@ public class JpaRoleRepository implements RoleRepository {
         }
     }
 
-    private RoleModel getRoleModelByID(String id){
-        return em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
-                .setParameter("id", id)
-                .getSingleResult();
+    private RoleModel getRoleModelByID(String id) throws RoleNotFound{
+        try {
+            return em.createQuery("FROM RoleModel r WHERE r.id=:id", RoleModel.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }catch (Exception e){
+            throw new RoleNotFound();
+        }
     }
 
     private boolean isRoleSaved(String roleName){
-        if(getRoleModel(roleName)== null){
-            return false;
-        }
-        return true;
+        return getRoleModel(roleName) != null;
     }
 
 }

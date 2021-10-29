@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("role")
 public class DeleteRoleController {
-    private DeleteRole service;
+    private final DeleteRole service;
 
     public DeleteRoleController(DeleteRole service) {
         this.service = service;

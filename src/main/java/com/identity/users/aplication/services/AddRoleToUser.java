@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AddRoleToUser {
-    private JpaUserRepository repository;
+    private final JpaUserRepository repository;
 
     public AddRoleToUser(JpaUserRepository repository) {
         this.repository = repository;
