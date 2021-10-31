@@ -18,13 +18,13 @@ public class GetByUserAndPassword {
 
     public String get(String user, String password) throws Exception {
         AppUser returned = repository.getByUser(user);
-            if (returned.getPassword().verify(password)) {
-                return JsonWebToken
-                        .generateJwtToken(PrivateKeyReader
-                                .get("/media/jorge/Trabajo/DesarrolloWork/DevelomentJava/identity/private.der"),
-                                new AppUserDto(returned));
-            }else{
-                throw new WrongPassword();
-            }
+        if (!returned.getPassword().verify(password)) {
+            throw new WrongPassword();
+        }
+
+        return JsonWebToken
+            .generateJwtToken(PrivateKeyReader
+                            .get("private.der"),
+                    new AppUserDto(returned));
         }
 }
