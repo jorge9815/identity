@@ -25,9 +25,13 @@ public class AuthFilter extends OncePerRequestFilter {
         return JsonWebToken.validateJwt(token);
     }
 
+    private boolean validateRole(HttpServletRequest request) {
+        return true;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(!this.validateToken(request)) {
+        if(!this.validateToken(request) || !this.validateRole(request)) {
             response.setStatus(401);
             return;
         }
