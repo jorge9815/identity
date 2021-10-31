@@ -21,7 +21,7 @@ public class GetByUserAndPassword {
             if (returned.getPassword().verify(password)) {
                 return JsonWebToken
                         .generateJwtToken(PrivateKeyReader
-                                .get("/media/jorge/Trabajo/DesarrolloWork/DevelomentJava/identity/private.pem"),
+                                .get("/media/jorge/Trabajo/DesarrolloWork/DevelomentJava/identity/private.der"),
                                 new AppUserDto(returned));
             }else{
                 throw new WrongPassword();
