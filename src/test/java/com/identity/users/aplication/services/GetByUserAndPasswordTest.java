@@ -3,12 +3,10 @@ package com.identity.users.aplication.services;
 import com.identity.TestData;
 import com.identity.exeptions.exceptions.WrongPassword;
 import com.identity.roles.aplication.RoleDto;
-import com.identity.shared.Password;
 import com.identity.users.aplication.AppUserDto;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.infrastructure.JpaUserRepository;
 import com.identity.utils.JsonWebToken;
-import com.identity.utils.PrivateKeyReader;
 import lombok.SneakyThrows;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Collectors;
 
-import static com.identity.TestData.getPassword;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,7 +51,7 @@ class GetByUserAndPasswordTest {
 
         AssertionsForClassTypes.assertThat(userNameCaptor.getValue()).isEqualTo(user.getUser());
         var roleList = user.getRolesList().stream().map(RoleDto::new).collect(Collectors.toList());
-        assertThat(JsonWebToken.decodeJwtToken(PrivateKeyReader.get("private.der"), returned))
+        assertThat(JsonWebToken.decodeJwtToken(returned))
                 .usingRecursiveComparison()
                 .withStrictTypeChecking()
                 .isEqualTo(new AppUserDto(
