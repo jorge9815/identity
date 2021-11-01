@@ -31,7 +31,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(!this.validateToken(request) || !this.validateRole(request)) {
+        if (!this.validateToken(request) || !this.validateRole(request)) {
             response.setStatus(401);
             return;
         }

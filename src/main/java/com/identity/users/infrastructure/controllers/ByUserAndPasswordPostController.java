@@ -1,5 +1,6 @@
 package com.identity.users.infrastructure.controllers;
 
+import com.identity.annotations.Anonymous;
 import com.identity.users.aplication.services.GetByUserAndPassword;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ public class ByUserAndPasswordPostController {
     }
 
     @PostMapping("auth")
+    @Anonymous
     public String getByPassAndUser(@RequestParam String user, @RequestParam String pass) throws Exception {
         return service.get(user, pass);
     }
