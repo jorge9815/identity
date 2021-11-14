@@ -1,9 +1,12 @@
 package com.identity.auth;
 
+import com.identity.annotations.Anonymous;
 import com.identity.utils.JsonWebToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -15,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@Slf4j
 public class AuthFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
@@ -25,8 +29,11 @@ public class AuthFilter extends OncePerRequestFilter {
     private boolean validateToken(HttpServletRequest request) {
         try {
             var controllerObject = getHandlerMapping(request);
-            System.out.println(controllerObject);
-//            controllerObject.isAnnotationPresent(Init.class)
+            var method = controllerObject.getMethod();
+
+            if (method.isAnnotationPresent(Anonymous.class)) {
+                return true;
+            }
             String authenticationHeader = request.getHeader(HEADER);
             if (authenticationHeader == null || !authenticationHeader.startsWith(PREFIX))
                 return false;
@@ -35,6 +42,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
             return JsonWebToken.validateJwt(token);
         } catch (Exception e) {
+            log.error("error: {}", e.getMessage());
             return false;
         }
     }
@@ -43,17 +51,22 @@ public class AuthFilter extends OncePerRequestFilter {
         return true;
     }
 
-    private Object getHandlerMapping(HttpServletRequest request) throws Exception {
+    private HandlerMethod getHandlerMapping(HttpServletRequest request) throws Exception {
         for (HandlerMapping handlerMapping : handlerMappings) {
             HandlerExecutionChain handlerExecutionChain = handlerMapping.getHandler(request);
             if (handlerExecutionChain != null) {
-                return handlerExecutionChain.getHandler(); // is your handler for this request
+                return (HandlerMethod) handlerExecutionChain.getHandler();
             }
         }
+        return null;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
         if (!this.validateToken(request) || !this.validateRole(request)) {
             response.setStatus(401);
             return;

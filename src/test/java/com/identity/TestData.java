@@ -1,5 +1,6 @@
 package com.identity;
 
+import com.identity.roles.aplication.RoleDto;
 import com.identity.roles.domain.entity.Role;
 import com.identity.roles.domain.value_objects.RoleID;
 import com.identity.shared.PaginatedList;
@@ -10,6 +11,7 @@ import com.identity.users.domain.value_objects.AppUserID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestData {
     public static List<Role> getRoles() {
@@ -42,6 +44,15 @@ public class TestData {
 
     public static PaginatedList<Role> getPaginatedListOfRoles(){
         return new PaginatedList<>(2L, 1, 2, getRoles());
+    }
+    public static PaginatedList<RoleDto> getPaginatedListOfRoleDto(){
+        var pl = getPaginatedListOfRoles();
+        return new PaginatedList<RoleDto>(
+                pl.getTotal(),
+                pl.getPage(),
+                pl.getPage(),
+                pl.getData().stream().map(RoleDto::new)
+                        .collect(Collectors.toList()));
     }
 
     public static Role getNewRole(){
