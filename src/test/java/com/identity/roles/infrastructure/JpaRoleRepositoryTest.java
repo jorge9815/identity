@@ -17,7 +17,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOf
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @DataJpaTest
-class JpaRoleRepositoryTest {
+class  JpaRoleRepositoryTest {
     @Autowired
     private EntityManager em;
     private JpaRoleRepository underTest;

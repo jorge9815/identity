@@ -1,43 +1,33 @@
 package com.identity.integration;
 
 
-import com.identity.IdentityApplication;
-import com.identity.TestData;
-import com.identity.roles.aplication.RoleDto;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(
-        classes = IdentityApplication.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class RolesIntegrationTest {
-    @LocalServerPort
-    private int port;
-
-    TestRestTemplate restTemplate = new TestRestTemplate();
-    HttpHeaders headers = new HttpHeaders();
-
+    @Autowired
+    private MockMvc mvc;
 
     @Test
-    public void saveRoleTest(){
-        HttpEntity<RoleDto> entity = new HttpEntity<RoleDto>(new RoleDto(TestData.getNewRole()), headers);
-        ResponseEntity<String> response = restTemplate
-                .exchange(createURLWithPort("roles"), HttpMethod.POST, entity,String.class);
-        String responseStatus = response.getStatusCode().toString();
-        assertThat(responseStatus).isEqualTo("Created");
+    public void saveRoleTest() throws Exception {
+        mvc.perform(get("/api/roles")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
     }
 
-private String createURLWithPort(String uri){
-    return "http://localhost:"+port+uri;
-}
+//    private String createURLWithPort(String uri){
+//        return "http://localhost:"+port+uri;
+//    }
 }
 
