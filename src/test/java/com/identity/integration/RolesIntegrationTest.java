@@ -1,6 +1,5 @@
 package com.identity.integration;
 
-
 import com.identity.IdentityApplication;
 import com.identity.TestData;
 import com.identity.roles.aplication.RoleDto;
@@ -26,18 +25,17 @@ public class RolesIntegrationTest {
     TestRestTemplate restTemplate = new TestRestTemplate();
     HttpHeaders headers = new HttpHeaders();
 
-
     @Test
-    public void saveRoleTest(){
+    public void saveRoleTest() {
         HttpEntity<RoleDto> entity = new HttpEntity<RoleDto>(new RoleDto(TestData.getNewRole()), headers);
         ResponseEntity<String> response = restTemplate
-                .exchange(createURLWithPort("roles"), HttpMethod.POST, entity,String.class);
+                .exchange(createURLWithPort("roles"), HttpMethod.POST, entity, String.class);
         String responseStatus = response.getStatusCode().toString();
         assertThat(responseStatus).isEqualTo("Created");
     }
 
-private String createURLWithPort(String uri){
-    return "http://localhost:"+port+uri;
-}
+    private String createURLWithPort(String uri) {
+        return "http://localhost:" + port + uri;
+    }
 }
 
