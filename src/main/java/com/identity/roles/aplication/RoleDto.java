@@ -12,7 +12,7 @@ public class RoleDto {
         this.name = name;
     }
 
-    public RoleDto(Role role) {
+public RoleDto(Role role) {
         this.id = role.getId().getValue();
         this.name = role.getName();
     }

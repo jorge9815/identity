@@ -22,6 +22,10 @@ public class TestData {
         return List.of(roles);
     }
 
+    public static RoleDto getRoleDto(){
+        return new RoleDto(getRoles().get(0));
+    }
+
     public static AppUser getUser() {
         return new AppUser(
                 new AppUserID("41d33e0c-0803-40bc-ab47-f26fa89796e5"),

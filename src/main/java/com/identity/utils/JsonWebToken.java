@@ -5,7 +5,6 @@ import com.identity.users.aplication.AppUserDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,13 +14,13 @@ import java.util.stream.Collectors;
 public class JsonWebToken {
 
     @SuppressWarnings("deprecation")
-    public static String generateJwtToken(PrivateKey privateKey, AppUserDto userDto) {
+    public static String generateJwtToken(AppUserDto userDto) throws Exception {
         userDto.setPassword(null);
         userDto.setSalt(null);
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + 1440 * 60 * 1000))
                 .claim("user", userDto)
-                .signWith(SignatureAlgorithm.RS256, privateKey).compact();
+                .signWith(SignatureAlgorithm.RS256, PrivateKeyReader.get("private.der")).compact();
     }
 
     public static AppUserDto decodeJwtToken(String jwt) throws Exception {
@@ -33,7 +32,6 @@ public class JsonWebToken {
         var rolesList = ((List) userClaim.get("rolesList"))
                 .stream().map(roleData -> JsonWebToken.getRoleFromHashMap((HashMap) roleData))
                 .collect(Collectors.toList());
-
 
         System.out.println(rolesList);
         return new AppUserDto(id, name, user, "", (List<RoleDto>) rolesList);

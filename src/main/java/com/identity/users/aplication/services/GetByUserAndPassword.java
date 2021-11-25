@@ -23,8 +23,6 @@ public class GetByUserAndPassword {
         }
 
         return JsonWebToken
-            .generateJwtToken(PrivateKeyReader
-                            .get("private.der"),
-                    new AppUserDto(returned));
+            .generateJwtToken(new AppUserDto(returned));
         }
 }
