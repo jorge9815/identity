@@ -7,6 +7,17 @@ public class Resource {
     private String name;
     private String url;
 
+    public Resource(ResourceId id, String name, String url) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
+
+    public Resource() {
+    }
+
+
+
     public ResourceId getId() {
         return id;
     }

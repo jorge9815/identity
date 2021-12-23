@@ -24,12 +24,13 @@ public class ResourceModel {
     public ResourceModel(Resource resource){
         this.id = resource.getId().getValue();
         this.name = resource.getName();
+        this.url = resource.getUrl();
     }
 
     public ResourceModel() {}
 
-    public Resource toRole(){
-        return new Resource(new ResourceId(this.id), this.name);
+    public Resource toResource(){
+        return new Resource(new ResourceId(this.id), this.name, this.url);
     }
 
     public String getId() {

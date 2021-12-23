@@ -51,7 +51,7 @@ class GetByUserAndPasswordTest {
 
         AssertionsForClassTypes.assertThat(userNameCaptor.getValue()).isEqualTo(user.getUser());
         var roleList = user.getRolesList().stream().map(RoleDto::new).collect(Collectors.toList());
-        assertThat(JsonWebToken.decodeJwtToken(returned))
+        assertThat(JsonWebToken.    decodeJwtToken(returned))
                 .usingRecursiveComparison()
                 .withStrictTypeChecking()
                 .isEqualTo(new AppUserDto(
