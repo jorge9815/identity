@@ -22,9 +22,6 @@ jobs:
         java-version: '16'
         distribution: 'adopt'
         cache: maven
-        
-    - name: Build project
-      run: mvn package
     - name: Run all Test
       run: mvn test
       
