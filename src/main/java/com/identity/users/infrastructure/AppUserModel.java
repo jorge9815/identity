@@ -4,10 +4,7 @@ import com.identity.roles.infrastructure.RoleModel;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +16,9 @@ public class AppUserModel {
     private String name;
     private String user;
     private String password;
+    private String salt;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<RoleModel> rolesList;
 
     public AppUserModel(String id, String name, String user, String password, List<RoleModel> rolesList) {
@@ -35,34 +33,44 @@ public class AppUserModel {
         this.id = user.getId().getValue();
         this.name = user.getName();
         this.user = user.getUser();
-        this.password = user.getPassword();
-        this.rolesList = user.getRolesList()
-                .stream().map(RoleModel::new)
-                .collect(Collectors.toList());
+        this.password = user.getPassword().getEncryptedPassword();
+        this.salt = user.getPassword().getSalt();
+        if (hasRolesTheUser(user))
+            this.rolesList = user.getRolesList()
+                    .stream().map(RoleModel::new)
+                    .collect(Collectors.toList());
+
     }
 
     public AppUserModel() {
     }
 
-    public AppUser toAppUser(){
+    public AppUser toAppUser() {
         return new AppUser(
                 new AppUserID(this.id),
                 this.name,
                 this.user,
                 this.password,
+                this.salt,
                 this.rolesList
                         .stream().map(RoleModel::toRole)
                         .collect(Collectors.toList())
         );
     }
 
-    public void update(AppUser user){
+    public void update(AppUser user) {
         this.name = user.getName();
         this.user = user.getUser();
-        this.password = user.getPassword();
-        this.rolesList = user.getRolesList()
-                .stream().map(RoleModel::new)
-                .collect(Collectors.toList());
+        this.password = user.getPassword().getEncryptedPassword();
+        this.salt = user.getPassword().getSalt();
+      if (hasRolesTheUser(user))
+            this.rolesList = user.getRolesList()
+                    .stream().map(RoleModel::new)
+                    .collect(Collectors.toList());
+    }
+
+    public void addRole(RoleModel roleModel) {
+        this.rolesList.add(roleModel);
     }
 
     public String getId() {
@@ -103,5 +111,9 @@ public class AppUserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private boolean hasRolesTheUser(AppUser user){
+        return !(user.getRolesList() == null);
     }
 }

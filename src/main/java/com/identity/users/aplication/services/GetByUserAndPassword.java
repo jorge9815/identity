@@ -1,18 +1,28 @@
 package com.identity.users.aplication.services;
 
-import com.identity.users.aplication.AppUsersDto;
+import com.identity.exeptions.exceptions.WrongPassword;
+import com.identity.users.aplication.AppUserDto;
+import com.identity.users.domain.entity.AppUser;
 import com.identity.users.infrastructure.JpaUserRepository;
+import com.identity.utils.JsonWebToken;
+import com.identity.utils.PrivateKeyReader;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GetByUserAndPassword {
-    private JpaUserRepository repository;
+    private final JpaUserRepository repository;
 
     public GetByUserAndPassword(JpaUserRepository repository) {
         this.repository = repository;
     }
 
-    public AppUsersDto get(String user, String password){
-        return new AppUsersDto(repository.getByUserAndPassword(user, password));
-    }
+    public String get(String user, String password) throws Exception {
+        AppUser returned = repository.getByUser(user);
+        if (!returned.getPassword().verify(password)) {
+            throw new WrongPassword();
+        }
+
+        return JsonWebToken
+            .generateJwtToken(new AppUserDto(returned));
+        }
 }
