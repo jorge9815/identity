@@ -39,7 +39,7 @@ public class RolesIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(content().json("{\"b\": \"b\"}"));;
+                .andExpect(content().json("{}"));;
     }
 
     @Test
