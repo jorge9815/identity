@@ -8,6 +8,7 @@ import com.identity.shared.Password;
 import com.identity.users.aplication.AppUserDto;
 import com.identity.users.domain.entity.AppUser;
 import com.identity.users.domain.value_objects.AppUserID;
+import com.identity.utils.JsonWebToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,4 +75,11 @@ public class TestData {
     public static Password getPassword(){
         return getUser().getPassword();
     }
+
+
+    public static String generateToken() throws Exception {
+        return JsonWebToken
+                .generateJwtToken(TestData.getNewUserDto());
+    }
+
 }
